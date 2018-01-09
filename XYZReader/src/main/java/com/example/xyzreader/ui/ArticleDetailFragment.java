@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
@@ -234,15 +235,19 @@ public class ArticleDetailFragment extends Fragment implements
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
-                        public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                        public void onResponse(final ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
-                                mMutedColor = p.getDarkMutedColor(0xFF333333);
-                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                mRootView.findViewById(R.id.meta_bar)
-                                        .setBackgroundColor(mMutedColor);
-                                updateStatusBar();
+                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                    @Override
+                                    public void onGenerated(@NonNull Palette palette) {
+                                        mMutedColor = palette.getDarkMutedColor(0xFF333333);
+                                        mPhotoView.setImageBitmap(imageContainer.getBitmap());
+                                        mRootView.findViewById(R.id.meta_bar)
+                                                .setBackgroundColor(mMutedColor);
+                                        updateStatusBar();
+                                    }
+                                });
                             }
                         }
 

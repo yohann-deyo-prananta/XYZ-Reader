@@ -17,8 +17,8 @@
 
 <resources>
     <color name="orange_500">#FF9800</color>
-    <color name="orange_800">#EF6C00</color>
-    <color name="teal_500">#009688</color>
+    <color name="orange_700">#F57C00</color>
+    <color name="light_blue_A200">#40C4FF</color>
     <!-- ========================================== -->
     <color name="photo_placeholder">#ccc</color>
     <color name="theme_primary">#04561A</color>
